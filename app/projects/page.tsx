@@ -111,13 +111,18 @@ export default function Projects() {
       clear();
       W = mount.clientWidth;
       H = mount.clientHeight;
+      if (!W || !H) return;
       renderer.setSize(W, H);
       camera.aspect = W / H;
       // Distance chosen so 1 world unit == 1 CSS pixel at z = 0.
       camera.position.z = H / 2 / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
       camera.updateProjectionMatrix();
 
-      R = THREE.MathUtils.clamp(Math.min(W / 6.5, H / 4.2), 70, 150);
+      // Portrait / small screens: size tiles from the width so they stay big enough to tap.
+      const portrait = W < H || W < 640;
+      R = portrait
+        ? THREE.MathUtils.clamp(W / 4.2, 56, 110)
+        : THREE.MathUtils.clamp(Math.min(W / 6.5, H / 4.2), 70, 150);
       const DEPTH = R * 0.18;
       const r = R * 0.93; // small gap between tiles
 
@@ -201,7 +206,8 @@ export default function Projects() {
       renderer.domElement.style.cursor = next?.slug ? "pointer" : "default";
     };
 
-    const pick = (e: PointerEvent) => {
+    // Accepts both PointerEvent and MouseEvent.
+    const pick = (e: { clientX: number; clientY: number }) => {
       const rect = mount.getBoundingClientRect();
       const px = e.clientX - rect.left, py = e.clientY - rect.top;
       ndc.set((px / rect.width) * 2 - 1, -(py / rect.height) * 2 + 1);
@@ -213,12 +219,27 @@ export default function Projects() {
       setHover(hit ? (hit.object.userData.tile as Tile) : null);
     };
 
-    const onLeave = () => { mouse.inside = false; setHover(null); };
-    const onClick = () => { if (hovered?.slug) router.push(`/projects/${hovered.slug}`); };
+    // Touch fires pointerleave BEFORE click, so only mouse clears hover here.
+    const onLeave = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      mouse.inside = false;
+      setHover(null);
+    };
+    const onUp = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") mouse.inside = false; // stop tilt after finger lifts
+    };
+    // Re-pick from the tap position so taps always open the right tile.
+    const onClick = (e: MouseEvent) => {
+      pick(e);
+      if (hovered?.slug) router.push(`/projects/${hovered.slug}`);
+    };
 
     const el = renderer.domElement;
+    el.style.touchAction = "none";
+    el.style.display = "block";
     el.addEventListener("pointermove", pick);
     el.addEventListener("pointerdown", pick);
+    el.addEventListener("pointerup", onUp);
     el.addEventListener("pointerleave", onLeave);
     el.addEventListener("click", onClick);
 
@@ -259,6 +280,7 @@ export default function Projects() {
       ro.disconnect();
       el.removeEventListener("pointermove", pick);
       el.removeEventListener("pointerdown", pick);
+      el.removeEventListener("pointerup", onUp);
       el.removeEventListener("pointerleave", onLeave);
       el.removeEventListener("click", onClick);
       clear();
@@ -269,15 +291,15 @@ export default function Projects() {
 
   return (
     <main className="fixed inset-0 overflow-hidden bg-bg">
-      <div ref={mountRef} className="absolute inset-0" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between p-5 md:p-8">
+      <div ref={mountRef} className="absolute inset-0 touch-none" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between p-4 pt-[max(1rem,env(safe-area-inset-top))] md:p-8">
         <Link
           href="/"
+          aria-label="Back to home"
           className="pointer-events-auto rounded-full border border-line bg-bg/70 px-4 py-2 font-mono text-xs text-muted backdrop-blur hover:text-accent"
         >
-          ← 
+          ← Back
         </Link>
-        
       </div>
     </main>
   );
