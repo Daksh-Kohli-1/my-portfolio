@@ -1,0 +1,11 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+:root { /* LIGHT: white + gold */
+  --bg: 255 253 246; --card: 250 244 228; --fg: 36 28 8; --muted: 120 104 62; --accent: 184 134 11; --line: 226 208 150; }
+.dark { /* DARK: red + black */
+  --bg: 5 5 5; --card: 22 22 22; --fg: 245 235 230; --muted: 150 135 130; --accent: 255 77 61; --line: 70 28 24; }
+body { @apply bg-bg text-fg font-display antialiased; background-image: radial-gradient(rgb(var(--line)/.5) 1px, transparent 1px); background-size: 28px 28px; transition: background-color .3s, color .3s; }
+.outline-text { color: transparent; -webkit-text-stroke: 2px rgb(var(--accent)); }
+.hex { clip-path: polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%); }
+.octagon { clip-path: polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%); }
+.glow { box-shadow: 0 0 40px rgb(var(--accent)/.25); }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
