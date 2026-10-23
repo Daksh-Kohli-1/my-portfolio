@@ -69,7 +69,7 @@ export default function Contact() {
                 )}
                 <p className="font-mono text-xs text-muted">Tier {t.id}</p>
                 <h2 className="mt-1 text-lg font-bold uppercase md:text-xl">{t.name}</h2>
-                <p className="outline-text mt-2 text-3xl font-bold md:text-4xl">Up to {t.price}</p>
+                <p className="outline-text mt-2 text-3xl font-bold md:text-4xl">{t.prefix} {t.price}</p>
                 <p className="mb-3 mt-1 font-mono text-[10px] text-muted">{t.note}</p>
                 <ul className="mb-4 space-y-1.5 text-[13px] md:text-sm">
                   {t.items.map((x) => (

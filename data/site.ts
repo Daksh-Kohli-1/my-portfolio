@@ -7,16 +7,16 @@ export const site = {
   tagline: "Full-stack engineer building scheduling systems, search and ML pipelines.",
   email: "kohlidaksh1707@gmail.com",
   github: "https://github.com/Daksh-Kohli-1",     // TODO: your GitHub URL
-  linkedin: "https://linkedin.com/", // TODO: your LinkedIn URL
-  telegram: "https://t.me/",         // TODO: your Telegram handle
+  linkedin: "https://www.linkedin.com/in/daksh-kohli-244a37328/", // TODO: your LinkedIn URL
+  telegram: "",         // TODO: your Telegram handle
   resume: "/daksh_kohli_resume.pdf",
-  photo: "/me.png", // drop your photo at public/me.png
+  photo: "/me.jpeg", // drop your photo at public/me.png
   heroImage: "/hacker.png", // optional landing art at public/hacker.png
   about: {
     quote:
-      "An aspiring engineer who refuses to follow the norm. I like to bend the rules to my liking. I pride myself on being a fast learner. I have led teams and finished projects. I am a believer of doing only what is important and hate doing things unnecessarily.",
+      "An aspiring engineer who refuses to follow the norm. I like to bend the rules to my liking. I pride myself on being a fast learner. I have led teams and finished projects. I am a believer of doing only what is important and hate doing things unnecessarily.\nI follow ‘keep it simple’ as a rule.",
     stats: [
-      // { label: "Role", value: "Tech Lead" },
+      // { label: "", value: "" },
       // { label: "CGPA", value: "8.39" },
     ],
     facts: [
@@ -33,35 +33,43 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "timetable-scheduler", title: "Timetable Scheduling System", icon: "▦",
-    summary: "Production auto-scheduler for institute-wide timetables.",
-    builtFor: "TSLAS Office, TIET: faculty and students across departments.",
-    tags: ["Python", "Next.js", "AWS", "DynamoDB", "Docker"],
-    story: "Resolves faculty overlaps, room-capacity limits, elective clashes and cross-department conflicts with simulated annealing, across 300+ major, minor and elective combinations and 20+ configurable constraints. A CI/CD pipeline with 11 automated validation tests checks room, faculty and student clashes before every deployment.",
-    stats: [{ label: "Students", value: "800+" }, { label: "Faculty", value: "30+" }, { label: "Constraints", value: "20+" }],
+    summary: "An institute-wide timetable scheduler that balances 20+ constraints with simulated annealing, wrapped in a full management portal.",
+    builtFor: "TSLAS (Thapar School of Liberal Arts and Sciences), Thapar Institute, Patiala: faculty, students and the timetable office. An official institute project.",
+    tags: ["Python", "FastAPI", "Simulated Annealing", "Next.js", "Motion", "AWS", "DynamoDB", "Docker"],
+    story: "TSLAS needed one timetable that works for everyone at once, and building it by hand meant endless clashes. I treated it as an optimization problem: the scheduler starts from a rough but valid timetable and uses simulated annealing, running 20,000+ optimization steps, to swap slots, rooms and faculty. Early on it accepts small setbacks so it can escape dead ends, then tightens as it cools. It balances 20+ configurable constraints, including faculty overlaps, room capacity, elective clashes and cross-department conflicts, across 20+ courses and 300+ major, minor and elective combinations. Around the solver sits a full portal with complete CRUD for students, faculty and the rest of the timetable data, and a CI/CD pipeline runs 11 automated validation tests for room, faculty and student clashes before every deployment.",
+    stats: [{ label: "Students", value: "800+" }, { label: "Faculty", value: "30+" }, { label: "Constraints", value: "20+" }, { label: "Optimization steps", value: "20,000+" }],
   },
   {
     slug: "library-management", title: "Thapar Library Management", icon: "▤",
-    summary: "Rebuild of the institute's official library platform.",
+    summary: "A real-time seat booking and complaint management platform for the Thapar library, built as an official institute project.",
     builtFor: "Thapar Institute students, faculty and library staff.",
-    tags: ["Next.js", "FastAPI", "PostgreSQL", "Redis", "Docker", "Nginx"],
-    story: "Led a 7-member team as Tech Lead. Redis-backed real-time updates and concurrency control keep simultaneous book checkouts consistent, targeting 10,000+ monthly active users, with sprint planning and code review owned by me.",
-    stats: [{ label: "Team", value: "7" }, { label: "Target MAU", value: "10k+" }],
+    tags: ["Next.js", "FastAPI", "PostgreSQL", "Redis", "WebSockets", "Motion", "Docker", "Nginx"],
+    story: "An official institute project, led as Tech Lead of a 7-member team. Students book library seats in real time: Redis handles caching and concurrency control so two people can never take the same seat, and WebSockets push live availability to every open screen. Each student gets their own analytics, and a complaint system tracks issues from filing to resolution, with feedback so library staff can see how well problems were handled. Built to serve 10,000+ monthly active users, with sprint planning and code review owned by me.",
+    stats: [{ label: "Team", value: "7" }, { label: "Target MAU", value: "10k+" }, { label: "Type", value: "Official" }],
   },
   {
     slug: "document-search", title: "Document Search Engine", icon: "⌕",
-    summary: "Full-text search built from first principles.",
+    summary: "Full-text search built from first principles in Java, with a RAG upgrade planned.",
     builtFor: "Anyone searching their own PDFs and documents locally.",
     tags: ["Java", "Spring Boot", "React", "PDFBox", "Apache POI"],
-    story: "Custom tokenizer, Porter stemmer and a hand-built positional inverted index for phrase queries, with no Lucene or Elasticsearch. TF-IDF and BM25 are implemented manually, with cosine similarity as an alternate path, and the two rankers are benchmarked against each other.",
-    stats: [{ label: "Rankers", value: "BM25 + TF-IDF" }], github: "https://github.com/",
+    story: "A search engine built from scratch to understand how search really works, with no Lucene or Elasticsearch. It has a custom tokenizer, a Porter stemmer and a hand-built positional inverted index for phrase queries. TF-IDF and BM25 ranking are implemented manually, with cosine similarity as an alternate path, and the two rankers are benchmarked against each other. The algorithms are deliberately classic for now. Next up: turning it into a RAG system, so questions get answered from the documents themselves instead of only returning ranked results.",
+    stats: [{ label: "Rankers", value: "BM25 + TF-IDF" }, { label: "Next", value: "RAG" }], github: "https://github.com/",
   },
   {
     slug: "volatility-regimes", title: "Volatility Regime Forecasting", icon: "∿",
-    summary: "Classifying market volatility regimes with ML.",
+    summary: "A research project on predicting market volatility regimes, comparing sequence-based and classical ML models.",
     builtFor: "Portfolio exposure decisions across liquid ETFs.",
-    tags: ["Python", "PyTorch", "LSTM", "Transformer", "Scikit-learn"],
-    story: "Daily regimes for 9 ETFs are labeled with GMM clustering (73% low, 25% medium, 1% high), then four architectures are benchmarked. Gradient Boosted Trees reached 95.2% accuracy and 0.947 macro-F1, ahead of Logistic Regression, LSTM and Transformer. A simple exposure rule beat buy-and-hold on Sharpe (0.98 vs 0.91).",
-    stats: [{ label: "Accuracy", value: "95.2%" }, { label: "Sharpe", value: "0.98" }], github: "https://github.com/",
+    tags: ["Python", "PyTorch", "LSTM", "Transformer", "Scikit-learn", "yfinance"],
+    story: "A research project on whether market volatility regimes can be predicted. Daily data for 9 ETFs comes from Yahoo Finance (yfinance), and regimes are labeled with GMM clustering (73% low, 25% medium, 1% high). Sequence-based models (LSTM, Transformer) and classical ML models (Logistic Regression, Gradient Boosted Trees) are then benchmarked against each other on the same data. Gradient Boosted Trees came out on top with 95.2% accuracy and 0.947 macro-F1, and a simple exposure rule built on the predictions beat buy-and-hold on Sharpe (0.98 vs 0.91).",
+    stats: [{ label: "Accuracy", value: "95.2%" }, { label: "Macro-F1", value: "0.947" }, { label: "Sharpe", value: "0.98" }], github: "https://github.com/",
+  },
+  {
+    slug: "nest-hostel-allotment", title: "Nest: Hostel Allotment", icon: "⌂",
+    summary: "A hostel allotment system that keeps friends close together, with visual maps of every hostel.",
+    builtFor: "Thapar Institute students and the hostel office.",
+    tags: ["Next.js", "FastAPI", "PostgreSQL", "Redis", "Three.js", "Motion", "Docker"],
+    story: "As a student I saw hostel allotment run very randomly, with people changing rooms by hand again and again just to end up near their friends. Nest fixes that with an algorithm that places every student near their friends, in the same room where possible and at least close by. Students form a group first (with a join code), and the leader submits 5–6 ranked hostel preferences during a preference window, with hostels allotted by demand and CGPA. Once fees are paid, a room allotment window opens and the algorithm keeps groups together. Students also never knew which way a room's balcony faced, so Nest includes full visual maps of the hostels, with room orientation shown on the floor plans.",
+    stats: [{ label: "Test data", value: "15,000 students" }, { label: "Preferences", value: "5–6 ranked" }],
   },
 ];
 
@@ -81,10 +89,10 @@ export const blogs: Blog[] = [
 ];
 
 export const tiers = [
-  { id: "01", name: "Core Frontend", price: "₹20,000", note: "Fixed deployment cadence", featured: false,
-    items: ["High-fidelity frontend UI/UX engineering", "Free deploy & edge-cached static CDN", "Maintenance: ₹500 – 1,500/mo"] },
-  { id: "02", name: "Full-Stack Architecture", price: "₹50,000", note: "Complex workflows & microservice synergy", featured: true,
-    items: ["Bespoke dynamic frontend application", "Resilient backend infrastructure & micro-APIs", "Deploy pipeline fully controlled by your team", "Maintenance: ₹1,500 – 3,000/mo"] },
-  { id: "03", name: "Intelligent Systems", price: "₹1,00,000", note: "Dynamic execution & deep APIs", featured: false,
-    items: ["Full multi-surface frontend orchestration", "Distributed cloud backend architecture", "AI integration, RAG & custom LLM pipelines", "Maintenance: ₹3,000+/mo"] },
+  { id: "01", name: "Core Frontend", prefix: "From", price: "₹20,000", note: "Frontend only, free hosting", featured: false,
+    items: ["Responsive, polished UI/UX design: up to 5 pages, 2 revision rounds", "Free deployment on Vercel or Cloudflare (custom domain not included)", "Delivery: under 2 weeks", "Maintenance: ₹1,500/mo flat"] },
+  { id: "02", name: "Dynamic Web App", prefix: "From", price: "₹50,000", note: "Dynamic frontend + basic backend", featured: true,
+    items: ["Dynamic frontend (up to 8 pages) with a basic backend: CRUD or simple analytics", "3 revision rounds included, delivery within 1 month", "Deployment, hosting and domain costs handled by you", "First 2 months of maintenance free, then ₹3,000/mo from month 3 (hosting costs are separate)"] },
+  { id: "03", name: "Custom Build", prefix: "From", price: "₹70,000", note: "Custom product, final price depends on scope", featured: false,
+    items: ["Complete frontend and backend with any custom functionality", "AI integration where needed; AI usage and API key costs handled by you", "Scope, milestones and delivery time agreed upfront based on your requirements, with revisions at each milestone", "Maintenance: ₹5,000/mo"] },
 ];

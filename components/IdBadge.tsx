@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { Spin } from "@/components/GlowBox";
 import { site } from "@/data/site";
+
+// ✏️ Placeholder text for the back of the pendant. Replace it with your own.
+const BIO =
+  "Hey, I'm Daksh. I build clean, fast and simple things for the web, from backends that behave to interfaces that feel alive. I learn by shipping side projects, breaking things on purpose, and caring about the details most people never notice.";
 
 // Pendulum feel: K = stiffness, C = damping (C_CALM is used while you reach for the Resume tab).
 // KB/CB do the same for the loose hinge between the rope and the pendant.
@@ -16,6 +21,7 @@ const face: React.CSSProperties = {
 
 export default function IdBadge() {
   const [flipped, setFlipped] = useState(false);
+  const [ready, setReady] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const swingRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -28,9 +34,6 @@ export default function IdBadge() {
     sx: 0, sy: 0, off: 0, pivotX: 0, pivotY: 0, lastT: 0,
   });
 
-  const facts = (site.about as { facts?: string[] }).facts ?? [];
-  const lines = (facts.length ? facts : site.about.stats.map((s) => `${s.label}: ${s.value}`)).slice(0, 4);
-
   const flip = () => {
     setFlipped((f) => !f);
     S.current.av += (Math.random() < 0.5 ? -1 : 1) * 0.4;
@@ -40,7 +43,11 @@ export default function IdBadge() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const s = S.current;
     const swing = swingRef.current!, wrap = wrapRef.current!, tab = tabRef.current!, card = cardRef.current!;
-    s.a = reduced ? 0 : 0.05;
+    s.a = 0;
+    const fade = requestAnimationFrame(() => setReady(true));
+
+    // Initial push: it swings in once, then settles and behaves normally.
+    const push = reduced ? 0 : window.setTimeout(() => { s.av = -1.7; s.bv = 1.2; }, 450);
 
     let raf = 0, last = performance.now(), prevAv = 0;
     const tick = (now: number) => {
@@ -80,7 +87,7 @@ export default function IdBadge() {
       // Elsewhere near the pendant: only a gentle nudge.
       const r = card.getBoundingClientRect();
       const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      const d = Math.hypot((e.clientX - cx) / 260, (e.clientY - cy) / 200);
+      const d = Math.hypot((e.clientX - cx) / 300, (e.clientY - cy) / 230);
       const infl = clamp(1 - d, 0, 1);
       if (infl > 0) {
         const nv = s.av - e.movementX * 0.0035 * infl;
@@ -99,6 +106,8 @@ export default function IdBadge() {
     document.addEventListener("visibilitychange", onVis);
     return () => {
       stop();
+      cancelAnimationFrame(fade);
+      clearTimeout(push);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("visibilitychange", onVis);
@@ -144,7 +153,9 @@ export default function IdBadge() {
   return (
     <div
       ref={boxRef}
-      className="pointer-events-none relative z-30 mx-auto h-[540px] w-[280px] select-none md:fixed md:-top-[90px] md:right-8 md:mx-0 md:h-[640px] lg:right-16"
+      className={`pointer-events-none relative z-30 mx-auto h-[520px] w-[300px] select-none transition-opacity duration-700 md:fixed md:-top-[90px] md:right-8 md:mx-0 md:h-[660px] md:w-[380px] lg:right-16 ${
+        ready ? "opacity-100" : "opacity-0"
+      }`}
     >
       {/* phones: small pin so the rope has something to hang from */}
       <span className="pointer-events-none absolute -top-1.5 left-1/2 z-20 h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-accent md:hidden" />
@@ -152,17 +163,17 @@ export default function IdBadge() {
       <div ref={swingRef} className="absolute inset-0" style={{ transformOrigin: "50% 0", willChange: "transform" }}>
         {/* rope: on desktop it starts above the top edge of the page */}
         <div
-          className="pointer-events-none absolute left-1/2 top-0 h-[150px] w-5 -translate-x-1/2 border-x border-accent/60 bg-accent/80 md:h-[240px]"
+          className="pointer-events-none absolute left-1/2 top-0 h-[150px] w-5 -translate-x-1/2 border-x border-accent/60 bg-accent/80 md:h-[210px]"
           style={{ backgroundImage: "repeating-linear-gradient(135deg, transparent 0 6px, rgba(0,0,0,0.18) 6px 9px)" }}
         />
 
         <div
           ref={wrapRef}
-          className="absolute inset-x-0 top-[150px] flex flex-col items-center md:top-[240px]"
+          className="absolute inset-x-0 top-[150px] flex flex-col items-center md:top-[210px]"
           style={{ transformOrigin: "50% 0", willChange: "transform" }}
         >
           {/* soft glow behind the pendant */}
-          <div className="pointer-events-none absolute left-1/2 top-[110px] h-56 w-56 -translate-x-1/2 rounded-full bg-accent/15 blur-3xl" />
+          <div className="pointer-events-none absolute left-1/2 top-[110px] h-64 w-64 -translate-x-1/2 rounded-full bg-accent/15 blur-3xl" />
 
           {/* clasp + ring */}
           <div className="pointer-events-none absolute -top-1.5 left-1/2 z-10 h-9 w-[26px] -translate-x-1/2 rounded-md border-2 border-muted bg-card">
@@ -171,7 +182,7 @@ export default function IdBadge() {
           <span className="pointer-events-none absolute left-1/2 top-[10px] z-10 h-5 w-5 -translate-x-1/2 rounded-full border-2 border-muted bg-bg" />
 
           {/* octagon pendant */}
-          <div className="pointer-events-auto mt-5" style={{ perspective: 900 }}>
+          <div className="pointer-events-auto mt-5" style={{ perspective: 1000 }}>
             <div
               ref={cardRef}
               role="button"
@@ -184,7 +195,7 @@ export default function IdBadge() {
               onPointerUp={onUp}
               onPointerCancel={onCancel}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } }}
-              className="relative h-[250px] w-[250px] cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-accent active:cursor-grabbing"
+              className="relative h-[260px] w-[260px] cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-accent active:cursor-grabbing md:h-[340px] md:w-[340px]"
               style={{
                 transformStyle: "preserve-3d",
                 transform: `rotateY(${flipped ? 180 : 0}deg)`,
@@ -192,33 +203,31 @@ export default function IdBadge() {
                 touchAction: "pan-y",
               }}
             >
-              {/* FRONT: photo */}
-              <div className="absolute inset-0 bg-accent" style={face}>
-                <div className="absolute inset-[3px] bg-card" style={{ clipPath: OCT }}>
+              {/* FRONT: photo, always centered and cropped to fill */}
+              <div className="absolute inset-0 overflow-hidden bg-accent/25" style={face}>
+                <Spin s={5} />
+                <div className="absolute inset-[5px] overflow-hidden bg-card" style={{ clipPath: OCT }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={site.photo}
                     alt={site.name}
                     draggable={false}
-                    className="h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover object-center"
                     onError={(e) => (e.currentTarget.style.display = "none")}
                   />
-                  <div className="absolute inset-x-0 bottom-[11%] bg-bg/80 py-1.5 text-center font-mono text-[11px] font-bold uppercase tracking-widest text-accent">
+                  <div className="absolute inset-x-0 bottom-[10%] bg-bg/80 py-1.5 text-center font-mono text-[11px] font-bold uppercase tracking-widest text-accent md:text-xs">
                     {site.name}
                   </div>
                 </div>
               </div>
 
-              {/* BACK: facts */}
-              <div className="absolute inset-0 bg-accent" style={{ ...face, transform: "rotateY(180deg)" }}>
-                <div className="absolute inset-[3px] bg-card" style={{ clipPath: OCT }}>
+              {/* BACK: a short paragraph about you */}
+              <div className="absolute inset-0 overflow-hidden bg-accent/25" style={{ ...face, transform: "rotateY(180deg)" }}>
+                <Spin s={5} d={2.5} />
+                <div className="absolute inset-[5px] bg-card" style={{ clipPath: OCT }}>
                   <div className="flex h-full flex-col items-center justify-center px-[17%] text-center">
-                    <p className="font-mono text-[10px] tracking-widest text-accent">FACTS.TXT</p>
-                    <ul className="mt-2 space-y-1.5 font-mono text-[10px] leading-snug text-muted">
-                      {lines.map((f) => (
-                        <li key={f}>› {f}</li>
-                      ))}
-                    </ul>
+                    <p className="font-mono text-[10px] tracking-widest text-accent md:text-xs">ABOUT_ME</p>
+                    <p className="mt-2 text-[10px] leading-snug text-fg/90 md:mt-3 md:text-[13px] md:leading-relaxed">{BIO}</p>
                   </div>
                 </div>
               </div>
