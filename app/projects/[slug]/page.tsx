@@ -20,7 +20,7 @@ export default function Detail({ params }: { params: { slug: string } }) {
     <>
       <DotField />
       <Shell back="/projects">
-        <Title sub="Project detail">{p.title}</Title>
+        <Title>{p.title}</Title>
 
         <article className="w-full max-w-3xl">
           {/* 1. What it is */}

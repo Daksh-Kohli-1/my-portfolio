@@ -38,6 +38,7 @@ export const projects: Project[] = [
     tags: ["Python", "FastAPI", "Simulated Annealing", "Next.js", "Motion", "AWS", "DynamoDB", "Docker"],
     story: "TSLAS needed one timetable that works for everyone at once, and building it by hand meant endless clashes. I treated it as an optimization problem: the scheduler starts from a rough but valid timetable and uses simulated annealing, running 20,000+ optimization steps, to swap slots, rooms and faculty. Early on it accepts small setbacks so it can escape dead ends, then tightens as it cools. It balances 20+ configurable constraints, including faculty overlaps, room capacity, elective clashes and cross-department conflicts, across 20+ courses and 300+ major, minor and elective combinations. Around the solver sits a full portal with complete CRUD for students, faculty and the rest of the timetable data, and a CI/CD pipeline runs 11 automated validation tests for room, faculty and student clashes before every deployment.",
     stats: [{ label: "Students", value: "800+" }, { label: "Faculty", value: "30+" }, { label: "Constraints", value: "20+" }, { label: "Optimization steps", value: "20,000+" }],
+    live:"https://timetable-tslas.org/",
   },
   {
     slug: "library-management", title: "Thapar Library Management", icon: "▤",
@@ -70,7 +71,19 @@ export const projects: Project[] = [
     tags: ["Next.js", "FastAPI", "PostgreSQL", "Redis", "Three.js", "Motion", "Docker"],
     story: "As a student I saw hostel allotment run very randomly, with people changing rooms by hand again and again just to end up near their friends. Nest fixes that with an algorithm that places every student near their friends, in the same room where possible and at least close by. Students form a group first (with a join code), and the leader submits 5–6 ranked hostel preferences during a preference window, with hostels allotted by demand and CGPA. Once fees are paid, a room allotment window opens and the algorithm keeps groups together. Students also never knew which way a room's balcony faced, so Nest includes full visual maps of the hostels, with room orientation shown on the floor plans.",
     stats: [{ label: "Test data", value: "15,000 students" }, { label: "Preferences", value: "5–6 ranked" }],
+    github:"https://github.com/Daksh-Kohli-1/SE_Project/",
   },
+  {
+    slug: "wecare-2027-conference", title: "WECARE2027: Conference Website", icon: "≈",
+    summary: "The official website for Thapar's international conference on water, environment and climate, built for paper submissions, registrations and showing the conference to the world.",
+    builtFor: "Thapar Institute and the WECARE2027 organizing committee.",
+    tags: ["Next.js", "React", "Tailwind CSS", "Cloudflare"],
+    story: "WECARE2027, the International Conference on Water, Environment, and Climate Adaptations for Regional Ecosystems, will be held at TIET, Patiala on 11–12 March 2027, with researchers coming from all over the world. The institute needed a site that works as the conference's public face and also does real work for authors and attendees. I built it as a front-end only website, with a bold hero, a clean committee and leadership section, and a dedicated Author's Area for paper submissions. It covers the four conference themes (water resources and watershed management; surface water, groundwater and cryosphere; climate change and hydrologic extremes; water quality and environmental sustainability), plus keynote speakers, sponsorship, registration and venue pages. A live Important Dates panel tracks the abstract submission window (24 Aug – 15 Nov 2026), acceptance notifications, camera-ready papers and early-bird registration, so authors always know what is next. The site is already live and has been visited by 1,500+ people, and traffic is expected to grow as the conference gets closer.",
+    stats: [{ label: "Visitors so far", value: "1,500+" }, { label: "Conference", value: "11–12 Mar 2027" }, { label: "Audience", value: "International" }],
+    live: "https://wecare.thapar.edu",
+    github:"https://github.com/Daksh-Kohli-1/conference-website",
+  },
+  
 ];
 
 export type Blog = { slug: string; title: string; excerpt: string; readTime: number; intro: string; sections: { heading: string; body: string }[] };

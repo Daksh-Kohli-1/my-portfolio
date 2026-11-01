@@ -298,7 +298,7 @@ export default function Projects() {
           aria-label="Back to home"
           className="pointer-events-auto rounded-full border border-line bg-bg/70 px-4 py-2 font-mono text-xs text-muted backdrop-blur hover:text-accent"
         >
-          ← Back
+          ←
         </Link>
       </div>
     </main>
