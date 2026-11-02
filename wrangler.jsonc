@@ -1,5 +1,9 @@
 {
-  "name": "portfolio",
+  "name": "my-portfolio",
   "compatibility_date": "2026-10-19",
-  "assets": { "directory": "./out" }
+  "assets": { "directory": "./out" },
+  "routes": [
+    { "pattern": "dakshkohli.xyz", "custom_domain": true },
+    { "pattern": "www.dakshkohli.xyz", "custom_domain": true }
+  ]
 }
