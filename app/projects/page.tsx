@@ -118,10 +118,12 @@ export default function Projects() {
       camera.position.z = H / 2 / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
       camera.updateProjectionMatrix();
 
-      // Portrait / small screens: size tiles from the width so they stay big enough to tap.
+      // Portrait / small screens: size tiles from the width so the widest row of the
+      // honeycomb (3 tiles across, where the projects sit) always fits on screen.
+      // 3 tiles span about 2.93 * sqrt(3) * R = 5.07 * R, so W / 5.6 leaves a small margin.
       const portrait = W < H || W < 640;
       R = portrait
-        ? THREE.MathUtils.clamp(W / 4.2, 56, 110)
+        ? THREE.MathUtils.clamp(W / 5.6, 36, 100)
         : THREE.MathUtils.clamp(Math.min(W / 6.5, H / 4.2), 70, 150);
       const DEPTH = R * 0.18;
       const r = R * 0.93; // small gap between tiles

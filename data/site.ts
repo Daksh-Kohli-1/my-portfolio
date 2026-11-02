@@ -57,12 +57,12 @@ export const projects: Project[] = [
     stats: [{ label: "Rankers", value: "BM25 + TF-IDF" }, { label: "Next", value: "RAG" }], github: "https://github.com/",
   },
   {
-    slug: "volatility-regimes", title: "Volatility Regime Forecasting", icon: "∿",
-    summary: "A research project on predicting market volatility regimes, comparing sequence-based and classical ML models.",
+    slug: "volatility-regimes", title: "Regime-X", icon: "∿",
+    summary: "A research project on predicting SPY's volatility regime, benchmarking LSTM, Transformer and classical ML against naive and GARCH baselines with leakage-free validation.",
     builtFor: "Portfolio exposure decisions across liquid ETFs.",
-    tags: ["Python", "PyTorch", "LSTM", "Transformer", "Scikit-learn", "yfinance"],
-    story: "A research project on whether market volatility regimes can be predicted. Daily data for 9 ETFs comes from Yahoo Finance (yfinance), and regimes are labeled with GMM clustering (73% low, 25% medium, 1% high). Sequence-based models (LSTM, Transformer) and classical ML models (Logistic Regression, Gradient Boosted Trees) are then benchmarked against each other on the same data. Gradient Boosted Trees came out on top with 95.2% accuracy and 0.947 macro-F1, and a simple exposure rule built on the predictions beat buy-and-hold on Sharpe (0.98 vs 0.91).",
-    stats: [{ label: "Accuracy", value: "95.2%" }, { label: "Macro-F1", value: "0.947" }, { label: "Sharpe", value: "0.98" }], github: "https://github.com/",
+    tags: ["Python", "PyTorch", "LSTM", "Transformer", "Scikit-learn", "GARCH", "yfinance"],
+    story: "A research project on whether market volatility regimes can be predicted. Daily data for 9 ETFs (2012–2024) comes from Yahoo Finance, and SPY's regime (low, medium or high) is labeled with a Gaussian mixture model. The target for each day is the realized volatility of the next 20 trading days, the labeler and scaler are fit on training rows only, and a 20-day purge gap keeps training labels from leaking into the test period. LSTM, Transformer, Gradient Boosted Trees and Logistic Regression are benchmarked against two strong baselines: naive persistence (tomorrow's regime = today's) and GJR-GARCH. On the holdout, Gradient Boosted Trees was the best ML model at 81.0% accuracy and 0.785 macro-F1, but persistence still scored 86.1%. A 9-fold purged walk-forward test, which includes crisis periods the holdout never saw, told the same story: no ML model beat persistence in more than 2 of 9 folds. Volatility features drive the model (20-day XLK volatility matters most). On SPY, a volatility-targeting rule on the GBT forecasts reached a holdout Sharpe of 1.05 against 1.03 for buy-and-hold, but over the walk-forward it fell to 0.80 against 0.81, so I read it as no tradable edge. The honest conclusion: simple baselines are hard to beat, and the value of the project is the rigorous evaluation.",
+    stats: [{ label: "Best ML accuracy", value: "81.0%" }, { label: "Macro-F1", value: "0.785" }, { label: "Persistence baseline", value: "86.1%" }, { label: "Walk-forward folds", value: "9" }], github: "https://github.com/Daksh-Kohli-1/RegimeX/",
   },
   {
     slug: "nest-hostel-allotment", title: "Nest: Hostel Allotment", icon: "⌂",
