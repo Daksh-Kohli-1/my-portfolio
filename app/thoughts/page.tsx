@@ -12,7 +12,7 @@ export default function Thoughts() {
         <Title sub="Perspective & irreverent essays">My thoughts</Title>
         <div className="grid gap-5 md:grid-cols-3">
           {blogs.map((b, i) => (
-            <motion.div key={b.slug} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} whileHover={{ y: -4 }}>
+            <motion.div key={b.slug} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} >
               <Link href={`/thoughts/${b.slug}`} className="group flex h-full flex-col justify-between rounded-xl border border-line bg-card p-6 transition hover:bg-accent hover:text-bg">
                 <div>
                   <div className="mb-6 flex justify-between font-mono text-[10px] text-muted group-hover:text-bg"><span>BLOG // {String(i + 1).padStart(2, "0")}</span><span>{b.readTime} min read</span></div>
